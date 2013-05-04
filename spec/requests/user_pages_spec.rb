@@ -40,5 +40,10 @@ describe "UserPages" do
 				expect {click_button submit}.to change(User, :count).by(1)
 			end
 		end
+
+		describe "after submission" do
+        	before { click_button submit }
+        	it { should have_content('error') }
+      	end
 	end				
 end
