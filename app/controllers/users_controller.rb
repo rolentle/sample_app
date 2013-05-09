@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
    def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def create
@@ -34,6 +35,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def feed
+    # This is preliminary. See "Following users" for the full implementation.
+    Micropost.where("user_id = ?", id)
+  end
 
   def update
     if @user.update_attributes(params[:user])
@@ -46,12 +51,6 @@ class UsersController < ApplicationController
   end
 
   private
-    def signed_in_user
-      unless signed_in?
-        store_location
-        redirect_to signin_url, notice: "Please sign in."
-      end
-    end
 
     def correct_user
       @user = User.find(params[:id])
